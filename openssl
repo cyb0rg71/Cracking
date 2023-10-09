@@ -1,1 +1,17 @@
-openssl enc -d -aes-256-cbc -in encrypted_file -out decrypted_file
+openssl enc -d -aes-256-cbc -in encrypted_file -out decrypted_file >> For decrypt a file.
+
+#Creating a private and public key.
+
+openssl genrsa -out private-key.pem 2048 >> With openssl, we used genrsa to generate an RSA private key. Using -out, we specified that the resulting private key is saved as private-key.pem. We added 2048 to specify a key size of 2048 bits.
+    
+openssl rsa -in private-key.pem -pubout -out public-key.pem >> Using openssl, we specified that we are using the RSA algorithm with the rsa option. We specified that we wanted to get the public key using -pubout. Finally, we set the private key as input using -in private-key.pem and saved the output using -out public-key.pem.
+    
+#To see real rsa variables.
+
+openssl rsa -in private-key.pem -text -noout >> We are curious to see real RSA variables, so we used -text -noout. The values of p, q, N, e, and d are prime1, prime2, modulus, publicExponent, and privateExponent, respectively.
+
+#To encrypt-decrypt file with public-private key.
+
+openssl pkeyutl -encrypt -in plaintext.txt -out ciphertext -inkey public-key.pem -pubin >> If we already have the recipient’s public key, we can encrypt it with this command.
+
+openssl pkeyutl -decrypt -in ciphertext -inkey private-key.pem -out decrypted.txt >> The recipient can decrypt it using this command.
